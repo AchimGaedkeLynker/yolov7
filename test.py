@@ -254,7 +254,10 @@ def test(data,
     # Save JSON
     if save_json and len(jdict):
         w = Path(weights[0] if isinstance(weights, list) else weights).stem if weights is not None else ''  # weights
-        anno_json = './coco/annotations/instances_val2017.json'  # annotations json
+        # anno_json = './coco/annotations/instances_val2017.json'  # annotations json
+        # anno_json = '../data/plankton_training_taxa_coarse_stage/plankton_instances_val.json'
+        # that's the rule used by cvat_to_yolov7
+        anno_json = str(Path(opt.data).parent / Path(opt.data).stem / "plankton_instances_val.json")
         pred_json = str(save_dir / f"{w}_predictions.json")  # predictions json
         print('\nEvaluating pycocotools mAP... saving %s...' % pred_json)
         with open(pred_json, 'w') as f:
