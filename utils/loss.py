@@ -117,7 +117,7 @@ class ComputeLoss:
         device = targets.device
         lcls, lbox, lobj, lkpt, lkptv = torch.zeros(1, device=device), torch.zeros(1, device=device), torch.zeros(1, device=device), torch.zeros(1, device=device), torch.zeros(1, device=device)
         # sigmas = torch.tensor([.26, .25, .25, .35, .35, .79, .79, .72, .72, .62, .62, 1.07, 1.07, .87, .87, .89, .89], device=device) / 10.0
-        sigmas = torch.tensor([.1] * self.nkpt, device=device)
+        sigmas = torch.tensor([.25] * self.nkpt, device=device)
         tcls, tbox, tkpt, indices, anchors = self.build_targets(p, targets)  # targets
 
         # Losses

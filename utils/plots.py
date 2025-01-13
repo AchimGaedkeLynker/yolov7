@@ -100,8 +100,10 @@ def plot_skeleton_kpts(im, kpts, steps, orig_shape=None):
     # seems to be 1 based indexing
     skeleton = [[1, 2], [2, 3]]
 
-    pose_limb_color = palette[[9, 9, 9, 9, 7, 7, 7, 0, 0, 0, 0, 0, 16, 16, 16, 16, 16, 16, 16]]
-    pose_kpt_color = palette[[16, 16, 16, 16, 16, 0, 0, 0, 0, 0, 0, 9, 9, 9, 9, 9, 9]]
+    # pose_limb_color = palette[[9, 9, 9, 9, 7, 7, 7, 0, 0, 0, 0, 0, 16, 16, 16, 16, 16, 16, 16]]
+    pose_limb_color = palette[[16, 9]]
+    # pose_kpt_color = palette[[16, 16, 16, 16, 16, 0, 0, 0, 0, 0, 0, 9, 9, 9, 9, 9, 9]]
+    pose_kpt_color = palette[[16, 0, 9]]
     radius = 5
     num_kpts = len(kpts) // steps
 
