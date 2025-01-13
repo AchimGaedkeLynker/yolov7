@@ -382,16 +382,19 @@ def train(hyp, opt, device, tb_writer=None):
 
             # Write
             with open(results_file, 'a') as f:
-                f.write(s + '%10.4g' * 7 % results + '\n')  # append metrics, val_loss
+                f.write(s + '%10.4g' * 9 % results + '\n')  # append metrics, val_loss
             if len(opt.name) and opt.bucket:
                 os.system('gsutil cp %s gs://%s/results/results%s.txt' % (results_file, opt.bucket, opt.name))
 
             # Log
-            tags = ['train/box_loss', 'train/obj_loss', 'train/cls_loss',  # train loss
+            # mloss[:-1] are 5 values: lbox, lobj, lcls, lkpt, lkptv
+            # results are 7 values: mp, mr, map50, map, lbox, lobj, lcls
+            #  lr contains learning rate of each param group
+            tags = ['train/box_loss', 'train/obj_loss', 'train/cls_loss', 'train/kpt_loss', 'train/kptv_loss', # train loss
                     'metrics/precision', 'metrics/recall', 'metrics/mAP_0.5', 'metrics/mAP_0.5:0.95',
-                    'val/box_loss', 'val/obj_loss', 'val/cls_loss',  # val loss
+                    'val/box_loss', 'val/obj_loss', 'val/cls_loss', 'val/kpt_loss', 'val/kptv_loss',  # val loss
                     'x/lr0', 'x/lr1', 'x/lr2']  # params
-            for x, tag in zip(list(mloss[:-1]) + list(results) + lr, tags):
+            for x, tag in zip(list(mloss[:-1]) + list(results) + lr, tags, strict=True):
                 if tb_writer:
                     tb_writer.add_scalar(tag, x, epoch)  # tensorboard
                 if wandb_logger.wandb:

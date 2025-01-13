@@ -105,7 +105,7 @@ def test(data,
     coco91class = coco80_to_coco91_class()
     s = ('%20s' + '%12s' * 6) % ('Class', 'Images', 'Labels', 'P', 'R', 'mAP@.5', 'mAP@.5:.95')
     p, r, f1, mp, mr, map50, map, t0, t1 = 0., 0., 0., 0., 0., 0., 0., 0., 0.
-    loss = torch.zeros(3, device=device)
+    loss = torch.zeros(5, device=device) # for keypoints: also kpt, kptv
     jdict, stats, ap, ap_class, wandb_images = [], [], [], [], []
     #jdict_kpt = [] if kpt_label else None
     for batch_i, (img, targets, paths, shapes) in enumerate(tqdm(dataloader, desc=s)):
@@ -136,7 +136,7 @@ def test(data,
 
             # Compute loss
             if compute_loss:
-                loss += compute_loss([x.float() for x in train_out], targets)[1][:3]  # box, obj, cls
+                loss += compute_loss([x.float() for x in train_out], targets)[1][:5]  # box, obj, cls, kpt, kptv
 
             # Run NMS
             if kpt_label:
@@ -391,7 +391,7 @@ if __name__ == '__main__':
     opt.save_json_kpt |= opt.data.endswith('coco_kpts.yaml')
     opt.data = check_file(opt.data)  # check file
     print(opt)
-    check_requirements(exclude=('tensorboard', 'pycocotools', 'thop'))
+    check_requirements(exclude=('tensorboard', 'pycocotools', 'thop', 'onnxruntime'))
 
     if opt.task in ('train', 'val', 'test'):  # run normally
         test(opt.data,
