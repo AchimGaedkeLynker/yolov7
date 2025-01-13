@@ -1,0 +1,6 @@
+coco2017labels/
+coco2017labels.zip
+*.pt
+__pycache__/
+runs/
+nohup.out
